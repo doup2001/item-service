@@ -30,7 +30,7 @@ public class BasicItemController {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         itemRepository.save(new Item("exampleA", 1000, 1));
         itemRepository.save(new Item("exampleB", 2000, 2));
 
@@ -50,12 +50,28 @@ public class BasicItemController {
 
     // 변수명과 @Pathvariable을 맞춰야한다.
     @GetMapping("/{itemId}")
-    public String item(@PathVariable Long itemId,Model model) {
+    public String item(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findByID(itemId);
         model.addAttribute("item", item);
 
         return "/basic/item";
     }
 
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model) {
+        Item item = itemRepository.findByID(itemId);
+        model.addAttribute("item", item);
+
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item updateItem,Model model) {
+
+        Item item = itemRepository.update(itemId, updateItem);
+        model.addAttribute("item", item);
+
+        return "redirect:/basic/items/{itemId}";
+    }
 }
 
