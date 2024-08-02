@@ -42,11 +42,25 @@ public class BasicItemController {
     }
 
     @PostMapping("/add")
-    public String addItem(@ModelAttribute Item item) {
+    public String addItemV1(@RequestParam String itemName,
+                            @RequestParam int price,
+                            @RequestParam int quantity,
+                            Model model) {
 
+        Item item = new Item(itemName, price, quantity);
         itemRepository.save(item);
+        model.addAttribute("item", item);
 
-        return "basic/items";
+        return "basic/item";
+    }
+
+    // 변수명과 @Pathvariable을 맞춰야한다.
+    @GetMapping("/{itemId}")
+    public String item(@PathVariable Long itemId,Model model) {
+        Item item = itemRepository.findByID(itemId);
+        model.addAttribute("item", item);
+
+        return "/basic/item";
     }
 
 }
