@@ -1,17 +1,15 @@
 package hello.itemservice.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ItemRepositoryTest {
 
-    private ItemRepository itemRepository = new ItemRepository();
+    private final ItemRepository itemRepository = new ItemRepository();
 
     @AfterEach
     void after() {
@@ -61,6 +59,27 @@ class ItemRepositoryTest {
         //then
         assertThat(items.size()).isEqualTo(2);
         assertThat(items).contains(item, item2);
+
+    }
+
+    @Test
+    void update() {
+
+        //given
+        Item item = new Item("hello", 1000, 1);
+        itemRepository.save(item);
+
+        String update_name = "update";
+        Integer update_price =  1000;
+        Integer update_quantity = 2;
+
+        //when
+        Item updateItem = new Item(update_name, update_price, update_quantity);
+        Item updatedItem = itemRepository.update(item.getItemID(), updateItem);
+
+        //then
+        assertThat(updatedItem.getItemID()).isEqualTo(item.getItemID());
+        assertThat(updatedItem.getItemName()).isEqualTo(update_name);
 
     }
 

@@ -2,7 +2,6 @@ package hello.itemservice.domain;
 
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,13 +27,14 @@ public class ItemRepository{
         return new ArrayList<>(store.values());
     }
 
-    public void update(Long itemId,Item updateItem) {
+    public Item update(Long itemId,Item updateItem) {
 
         Item findByID = findByID(itemId);
         findByID.setItemName(updateItem.getItemName());
         findByID.setPrice(updateItem.getPrice());
         findByID.setQuantity(updateItem.getQuantity());
 
+        return findByID;
     }
 
     public void deleteAll() {
