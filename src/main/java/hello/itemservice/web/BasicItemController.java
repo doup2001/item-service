@@ -2,30 +2,52 @@ package hello.itemservice.web;
 
 
 import hello.itemservice.domain.Item;
+import hello.itemservice.domain.ItemRepository;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Slf4j
 @Controller
+@RequestMapping("/basic/items")
+@RequiredArgsConstructor
 public class BasicItemController {
 
-    @GetMapping("/basic/items")
-    public String items() {
+    private final ItemRepository itemRepository;
+
+    @GetMapping
+    public String items(Model model) {
+
+        List<Item> items = itemRepository.findByAll();
+        model.addAttribute("items", items);
         return "basic/items";
     }
 
-    @GetMapping("/basic/items/add")
+    @PostConstruct
+    public void init(){
+        itemRepository.save(new Item("exampleA", 1000, 1));
+        itemRepository.save(new Item("exampleB", 2000, 2));
+
+    }
+
+    @GetMapping("/add")
     public String addForm() {
         return "basic/addForm";
     }
 
-    @PostMapping("/basic/items/add")
+    @PostMapping("/add")
     public String addItem(@ModelAttribute Item item) {
 
-        log.info("test_item_Name = {}", item.getItemName());
+        itemRepository.save(item);
 
-        return "ok";
+        return "basic/items";
     }
+
 }
+
