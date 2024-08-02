@@ -42,12 +42,8 @@ public class BasicItemController {
     }
 
     @PostMapping("/add")
-    public String addItemV1(@RequestParam String itemName,
-                            @RequestParam int price,
-                            @RequestParam int quantity,
-                            Model model) {
+    public String addItemV2(@ModelAttribute Item item, Model model) {
 
-        Item item = new Item(itemName, price, quantity);
         itemRepository.save(item);
         model.addAttribute("item", item);
 
