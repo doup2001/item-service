@@ -14,8 +14,8 @@ public class ItemRepository{
     private static long sequence = 0L;
 
     public Item save(Item item) {
-        item.setItemID(++sequence);
-        store.put(item.getItemID(), item);
+        item.setId(++sequence);
+        store.put(item.getId(), item);
         return item;
     }
 
@@ -40,8 +40,6 @@ public class ItemRepository{
     public void deleteAll() {
         store.clear();
     }
-
-
 
 }
 
